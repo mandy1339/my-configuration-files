@@ -2,6 +2,40 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+
+#COLORS FROM SETH
+# COLORS
+# -------------------------------------------------------------------------
+ NO_COLOR=$(tput sgr0)
+     BOLD=$(tput bold)
+    BLACK=$(tput setaf 0)
+      RED=$(tput setaf 1)
+    GREEN=$(tput setaf 2)
+   YELLOW=$(tput setaf 3)
+     BLUE=$(tput setaf 4)
+  MAGENTA=$(tput setaf 5)
+      CYAN=$(tput setaf 6)
+      WHITE=$(tput setaf 7)
+      B_RED=$BOLD$RED
+     B_BLUE=$BOLD$BLUE
+  B_MAGENTA=$BOLD$MAGENTA
+     B_CYAN=$BOLD$CYAN
+    B_WHITE=$BOLD$WHITE
+    B_GREEN=$BOLD$GREEN
+   B_YELLOW=$BOLD$YELLOW
+    B_BLACK=$BOLD$BLACK
+   ON_BLACK=$(tput setab 0)
+     ON_RED=$(tput setab 1)
+   ON_GREEN=$(tput setab 2)
+  ON_YELLOW=$(tput setab 3)
+    ON_BLUE=$(tput setab 4)
+ ON_MAGENTA=$(tput setab 5)
+     ON_CYAN=$(tput setab 6)
+    ON_WHITE=$(tput setab 7)
+
+
+
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -57,7 +91,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -115,3 +149,98 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+
+#TAKEN FROM SETH BAXTER
+# Directory Colors
+#--------------------------------------------------------------------------
+export LS_COLORS='di=0;32'
+# -------------------------------------------------------------------------
+
+
+
+
+# ALIASES
+# -------------------------------------------------------------------------
+alias rm='rm -i '
+alias cp='cp -i '
+alias mv='mv -i '
+alias grep="grep --color=auto"
+alias back="cd -"
+alias ..="cd .."
+alias ..2="cd ../.."
+alias ..3="cd ../../.."
+alias ..4="cd ../../../.."
+alias ..5="cd ../../../../.."
+alias lynx="lynx -accept_all_cookies -vikeys"
+alias mfa="source source-aws-mfa"
+# -------------------------------------------------------------------------
+
+
+
+# GIT
+# -------------------------------------------------------------------------
+
+# git completion
+test -f $HOME/.git-completion.bash && source $HOME/.git-completion.bash
+
+# aliases
+alias hist='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+alias gst='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gpick='git cherry-pick -x'
+alias gd='git diff'
+alias gco='git checkout'
+alias gpr='git merge --no-ff'
+alias gpt='git push --tags'
+alias gr='git pull --rebase'
+alias grb="git for-each-ref --sort=-committerdate refs/remotes/ --format='%(refname:short)' --count=10"
+alias grm='git rm'
+alias groot='cd $(git rev-parse --show-cdup) '
+alias gt='git tag -sam'
+
+function gp {
+  local branch
+  git status >/dev/null 2>&1 || return;
+
+  branch=$(git symbolic-ref HEAD 2>/dev/null)
+  [ -z $branch ] && echo "Detached state?" && return 1
+  echo "pushing to origin/$branch"
+  git push origin $branch
+}
+
+function gu {
+  local branch
+  git status >/dev/null 2>&1 || return;
+
+  branch=$(git symbolic-ref HEAD 2>/dev/null)
+  [ -z $branch ] && echo "Detached state?" && return 1
+  echo "pulling from origin/$branch"
+  git pull origin $branch
+}
+# -------------------------------------------------------------------------
+
+
+
+
+
+# Directory Colors
+LS_COLORS=$LS_COLORS:'di=1;33:' ; export LS_COLORS
+# -------------------------------------------------------------------------
+
+
+
+
+# DEFAULTS (stick them in .bash_profile)
+# -------------------------------------------------------------------------
+: ${PROMPT_COLOR:=$BOLD$RED}
+: ${ORG:=}
+: ${REPO:=~/repos}
+: ${WWW_HOME:=https://google.com}
+: ${USER_TAG:="($USER)"}
+# -------------------------------------------------------------------------
+
+
+
